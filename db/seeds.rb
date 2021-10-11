@@ -11,13 +11,14 @@
 # puts http.request(request).body
 require 'json'
 require 'open-uri'
-require 'net/http'
+require 'net/https'
 
-
-http = Net::HTTP.new('api.igdb.com/v4',443)
+http = Net::HTTP.new('api.igdb.com',443)
 http.use_ssl = true
 request = Net::HTTP::Post.new(URI('https://api.igdb.com/v4/games'), {'Client-ID' => 'kbfk11t8q6lb33clzkf074fflfrk2b', 'Authorization' => 'Bearer 0r29zp7b8uwswd6rjed08svor0h0jf'})
-request.body = 'fields age_ratings,aggregated_rating,aggregated_rating_count,alternative_names,artworks,bundles,category,checksum,collection,cover,created_at,dlcs,expanded_games,expansions,external_games,first_release_date,follows,forks,franchise,franchises,game_engines,game_modes,genres,hypes,involved_companies,keywords,multiplayer_modes,name,parent_game,platforms,player_perspectives,ports,rating,rating_count,release_dates,remakes,remasters,screenshots,similar_games,slug,standalone_expansions,status,storyline,summary,tags,themes,total_rating,total_rating_count,updated_at,url,version_parent,version_title,videos,websites;'
+# request.body = 'fields age_ratings,aggregated_rating,aggregated_rating_count,alternative_names,artworks,bundles,category,checksum,collection,cover,created_at,dlcs,expanded_games,expansions,external_games,first_release_date,follows,forks,franchise,franchises,game_engines,game_modes,genres,hypes,involved_companies,keywords,multiplayer_modes,name,parent_game,platforms,player_perspectives,ports,rating,rating_count,release_dates,remakes,remasters,screenshots,similar_games,slug,standalone_expansions,status,storyline,summary,tags,themes,total_rating,total_rating_count,updated_at,url,version_parent,version_title,videos,websites;'
+# request.body = 'fields name,platforms,player_perspectives,ports,rating,rating_count,release_dates,remakes,remasters,screenshots,similar_games,storyline,summary,total_rating;'
+request.body = 'search “zelda”;'
 puts http.request(request).body
 
 # url = "https://api.igdb.com/v4/games"
