@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./GameList.css";
 import axios from "axios";
+import { object } from "prop-types";
 
 const GameList = () => {
   const [enteredGameSearch, setEnteredGameSearch] = useState("");
@@ -32,52 +33,41 @@ const GameList = () => {
              rating_count,
              total_rating,
              release_dates,
-             cover.url,
+             cover.image_id,
              screenshots,
+             platforms.name,
              storyline;
              search "${search}";`,
     })
       .then((res) => {
+        const gamesArray = [];
         const respList = res.data;
         console.log(respList);
 
-        const gamesArray = [];
-
         respList.map((game) => {
-          const coverImage = "";
+          const gameImage = game.cover.image_id;
+          const gameCover = `https://images.igdb.com/igdb/image/upload/t_cover_big/${gameImage}.jpg`;
 
-          axios({
-            url: "http://localhost:3030/https://api.igdb.com/v4/covers",
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Client-ID": "kbfk11t8q6lb33clzkf074fflfrk2b",
-              Authorization: "Bearer 0r29zp7b8uwswd6rjed08svor0h0jf",
-            },
-            data: `fields *; where id = ${game.cover};`,
-          })
-            .then((res) => {
-              // find cover image and save to object
-              const imageId = res.data[0].image_id;
-              const gameCover = `https://images.igdb.com/igdb/image/upload/t_cover_big/${imageId}.jpg`;
+          let platformNameArray;
+    
+          if (typeof game.platforms !== "object") {
+            platformNameArray = [];
+          } else {
+            platformNameArray = game.platforms;
+          }
 
-              const gameObject = {
-                name: game.name,
-                rating: game.rating,
-                storyline: game.storyline,
-                cover: gameCover,
-              };
-
-              gamesArray.push(gameObject);
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-
-          setGamesList(gamesArray);
+          const gameObject = {
+            id: game.id,
+            name: game.name,
+            rating: game.rating,
+            storyline: game.storyline,
+            platforms: platformNameArray,
+            cover: gameCover,
+          };
+          console.log(gameObject);
+          gamesArray.push(gameObject);
         });
-        // setGamesList(gamesArray);
-        // build an array of objects that can then be saved using setGamesList
+        setGamesList(gamesArray);
       })
       .catch((err) => {
         console.error(err);
@@ -85,6 +75,7 @@ const GameList = () => {
     setEnteredGameSearch("");
   };
 
+  // ----- return method ----- //
   return (
     <div>
       <div className="search_bar">
@@ -100,10 +91,19 @@ const GameList = () => {
       </div>
       <div>
         <ul>
-          {gamesList.map((game) => {
+          {console.log(gamesList, "return method line 83")}
+          {gamesList.map((game, index) => {
+            console.log(game.platforms, "platforms");
             return (
               <div>
                 <li>{game.name}</li>
+                <li>{game.rating}</li>
+                <div>
+                  {game.platforms.map(plat => (
+                    <p>{plat.name}</p>
+                  ))}
+                </div>
+                <li>{game.storyline}</li>
                 <img src={game.cover} alt="game cover" />
               </div>
             );
