@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./GameList.css";
 import axios from "axios";
-import { object } from "prop-types";
 
 const GameList = () => {
   const [enteredGameSearch, setEnteredGameSearch] = useState("");
@@ -36,6 +35,7 @@ const GameList = () => {
              cover.image_id,
              screenshots,
              platforms.name,
+             genres,
              storyline;
              search "${search}";`,
     })
@@ -49,6 +49,8 @@ const GameList = () => {
           const gameCover = `https://images.igdb.com/igdb/image/upload/t_cover_big/${gameImage}.jpg`;
 
           let platformNameArray;
+
+          console.log(game.genres, "genres line 54");
     
           if (typeof game.platforms !== "object") {
             platformNameArray = [];
@@ -61,10 +63,10 @@ const GameList = () => {
             name: game.name,
             rating: game.rating,
             storyline: game.storyline,
+            genres: game.genres,
             platforms: platformNameArray,
             cover: gameCover,
           };
-          console.log(gameObject);
           gamesArray.push(gameObject);
         });
         setGamesList(gamesArray);
@@ -91,15 +93,13 @@ const GameList = () => {
       </div>
       <div>
         <ul>
-          {console.log(gamesList, "return method line 83")}
           {gamesList.map((game, index) => {
-            console.log(game.platforms, "platforms");
             return (
               <div>
                 <li>{game.name}</li>
                 <li>{game.rating}</li>
                 <div>
-                  {game.platforms.map(plat => (
+                  {game.platforms.map((plat, index) => (
                     <p>{plat.name}</p>
                   ))}
                 </div>
