@@ -35,27 +35,41 @@ const GameList = () => {
              cover.image_id,
              screenshots,
              platforms.name,
-             genres,
+             genres.name,
+             summary,
+             videos.video_id,
              storyline;
              search "${search}";`,
     })
       .then((res) => {
         const gamesArray = [];
         const respList = res.data;
-        console.log(respList);
+        console.log(respList, "respList line 45");
 
         respList.map((game) => {
           const gameImage = game.cover.image_id;
           const gameCover = `https://images.igdb.com/igdb/image/upload/t_cover_big/${gameImage}.jpg`;
 
           let platformNameArray;
-
-          console.log(game.genres, "genres line 54");
-    
+          let genreArray;
+          let videoIdArray;
+          
           if (typeof game.platforms !== "object") {
-            platformNameArray = [];
+            platformNameArray = [{ name: "platform unknown"}];
           } else {
             platformNameArray = game.platforms;
+          }
+
+          if (typeof game.genres !== "object") {
+            genreArray = [{ name: "genre unknown"}];
+          } else {
+            genreArray = game.genres;
+          }
+
+          if (typeof game.videos !== "object") {
+            videoIdArray = [{video_id: 'GED9p33VYIw'}];
+          } else {
+            videoIdArray = game.videos;
           }
 
           const gameObject = {
@@ -63,9 +77,11 @@ const GameList = () => {
             name: game.name,
             rating: game.rating,
             storyline: game.storyline,
-            genres: game.genres,
+            summary: game.summary,
+            genres: genreArray,
             platforms: platformNameArray,
             cover: gameCover,
+            videos: videoIdArray,
           };
           gamesArray.push(gameObject);
         });
@@ -103,6 +119,19 @@ const GameList = () => {
                     <p>{plat.name}</p>
                   ))}
                 </div>
+                <div>
+                  {game.genres.map((genre, index) => (
+                    <p>{genre.name}</p>
+                  ))}
+                </div>
+                <div>
+                  {game.videos.map((video, index) => (
+                    <iframe width="420" height="315"
+                      src={`https://www.youtube.com/watch?v=${video.video_id}`}>
+                    </iframe>
+                  ))}
+                </div>
+                <li>{game.summary}</li>
                 <li>{game.storyline}</li>
                 <img src={game.cover} alt="game cover" />
               </div>
