@@ -1,4 +1,5 @@
-.search_bar {
+.game_list__container {
+  font-family: 'Press Start 2P', cursive;
   display: flex;
   justify-content: center;
 }
