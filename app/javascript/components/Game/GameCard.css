@@ -1,0 +1,32 @@
+.game__card {
+  display: flex;
+  width: 584px;
+  height: 103px;
+  margin: 16px;
+  padding: 8px;
+  border: 1px solid #615f60;
+}
+
+.game__card:hover {
+  -webkit-box-shadow: -4px 4px 0px 0px #20bf7a; 
+  box-shadow: -4px 4px 0px 0px #20bf7a;
+  transform: translate(4px, -4px);
+}
+
+.game__card img {
+  width: 148px;
+}
+
+.game__titles {
+  margin-left: 8px;
+}
+
+.game__game_name {
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.game__game_genre {
+  font-size: 18px;
+  color: #848484;
+}
