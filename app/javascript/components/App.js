@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import axios from "axios";
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import GameList from './GameList/GameList';
 import NavBar from './NavBar/NavBar'; 
+import GameShow from './Game/GameShow';
 
 const App = () => {
   const [gamesList, setGamesList] = useState([]);
@@ -77,7 +79,16 @@ const App = () => {
   return (
     <div>
       <NavBar onSaveSearchData={searchGameHandler}/>
-      <GameList games={gamesList}/>
+      <Router>
+        <Switch>
+          <Route path="/show" exact>
+            <GameList games={gamesList}/>
+          </Route>
+          <Route path="/:id">
+            <GameShow games={gamesList}/>
+          </Route>
+        </Switch>
+      </Router>
     </div>
   )
 };
