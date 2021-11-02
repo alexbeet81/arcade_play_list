@@ -81,10 +81,10 @@ const App = () => {
       <NavBar onSaveSearchData={searchGameHandler}/>
       <Router>
         <Switch>
-          <Route path="/show" exact>
+          <Route path="/games" exact>
             <GameList games={gamesList}/>
           </Route>
-          <Route path="/:id">
+          <Route path="/game/:id">
             <GameShow games={gamesList}/>
           </Route>
         </Switch>

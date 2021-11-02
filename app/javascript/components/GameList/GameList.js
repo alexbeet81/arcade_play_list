@@ -1,5 +1,5 @@
 import React from "react";
-import Link from "react-router-dom";
+import {Link} from "react-router-dom";
 
 import ReactPlayer from "react-player";
 
@@ -13,12 +13,13 @@ const GameList = (props) => {
         <div>
           {props.games.map((game, index) => {
             return (
-              <GameCard
-                key={game.id}
-                id={game.id}
-                cover={game.cover}
-                name={game.name}
-                genre={game.genres[0].name}/>
+              <Link key={game.id} to={`/game/${game.id}`}>
+                <GameCard
+                  id={game.id}
+                  cover={game.cover}
+                  name={game.name}
+                  genre={game.genres[0].name}/>
+              </Link>
             );
           })}
         </div>
