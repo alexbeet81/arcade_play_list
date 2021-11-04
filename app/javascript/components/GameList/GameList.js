@@ -1,8 +1,6 @@
 import React from "react";
 import {Link} from "react-router-dom";
 
-import ReactPlayer from "react-player";
-
 import "./GameList.css";
 import GameCard from "../Game/GameCard";
 

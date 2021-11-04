@@ -26,7 +26,7 @@ const App = () => {
              rating,
              rating_count,
              total_rating,
-             release_dates,
+             first_release_date,
              cover.image_id,
              screenshots.image_id,
              platforms.name,
@@ -41,8 +41,7 @@ const App = () => {
       .then((res) => {
         const gamesArray = [];
         const respList = res.data;
-        console.log(respList, "respList line 45");
-
+        console.log(respList);
         respList.map((game) => {
           const gameImage = game.cover.image_id;
           const gameCover = `https://images.igdb.com/igdb/image/upload/t_cover_big/${gameImage}.jpg`;
@@ -66,6 +65,7 @@ const App = () => {
             platforms: platformNameArray,
             cover: gameCover,
             videos: videoIdArray,
+            release_date: game.first_release_date
           };
           gamesArray.push(gameObject);
         });
@@ -78,16 +78,16 @@ const App = () => {
 
   return (
     <div>
-      <NavBar onSaveSearchData={searchGameHandler}/>
       <Router>
-        <Switch>
-          <Route path="/games" exact>
-            <GameList games={gamesList}/>
-          </Route>
-          <Route path="/game/:id">
-            <GameShow games={gamesList}/>
-          </Route>
-        </Switch>
+        <NavBar onSaveSearchData={searchGameHandler}/>
+          <Switch>
+            <Route path="/games" exact>
+              <GameList games={gamesList}/>
+            </Route>
+            <Route path="/game/:id">
+              <GameShow games={gamesList}/>
+            </Route>
+          </Switch>
       </Router>
     </div>
   )
