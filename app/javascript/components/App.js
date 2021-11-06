@@ -9,6 +9,25 @@ import GameShow from './Game/GameShow';
 const App = () => {
   const [gamesList, setGamesList] = useState([]);
 
+  // method setting release date of game to human readable string
+  const setReleaseDate = (timeStamp) => {
+    if (typeof timeStamp === 'undefined') {
+      return 'unknown'
+    }
+    const d = new Date(timeStamp * 1000);
+    const year = d.getFullYear();
+    const date = d.getDate();
+    const monthIndex = d.getMonth();
+
+    const months = ['January', 'February', 'March', 'April', 'May', 
+                    'June', 'July', 'August', 'September', 'October', 
+                    'November', 'December']
+    
+    const monthName = months[monthIndex]
+
+    return `${monthName} ${date} ${year}`
+  }
+
   const searchGameHandler = (enteredGameSearch) => {
     axios({
       url: "http://localhost:3030/https://api.igdb.com/v4/games",
@@ -22,7 +41,7 @@ const App = () => {
       // data: `fields name; search "${search}";`,
       data: `fields name,
              platforms,
-             player_perspectives,
+             player_perspectives.name,
              rating,
              rating_count,
              total_rating,
@@ -34,14 +53,17 @@ const App = () => {
              summary,
              videos.video_id,
              artworks.image_id,
+             multiplayer_modes.offlinemax,
+             multiplayer_modes.offlinecoop,
              artworks.url,
+             slug,
              storyline;
              search "${enteredGameSearch}";`,
     })
       .then((res) => {
         const gamesArray = [];
         const respList = res.data;
-        console.log(respList);
+
         respList.map((game) => {
           const gameImage = game.cover.image_id;
           const gameCover = `https://images.igdb.com/igdb/image/upload/t_cover_big/${gameImage}.jpg`;
@@ -49,7 +71,17 @@ const App = () => {
           let platformNameArray;
           let genreArray;
           let videoIdArray;
+
+          console.log(game.multiplayer_modes[0].offlinecoop, "line 75")
+
+          if (game.multiplayer_modes[0].offlinecoop === 'undifined') {
+            const coop = "no";
+          } else {
+            const coop = game.multiplayer_modes[0].offlinecoop ? "yes" : "no";
+          }
+
           
+          console.log(coop, "coop, line 77")
           // checking if some arrays are undifined
           typeof game.platforms !== "object" ? platformNameArray = [{ name: "platform unknown"}] : platformNameArray = game.platforms;
           typeof game.genres !== "object" ? genreArray = [{ name: "genre unknown"}] : genreArray = game.genres;
@@ -58,14 +90,18 @@ const App = () => {
           const gameObject = {
             id: game.id,
             name: game.name,
-            rating: game.rating,
+            player_perspectives: game.player_perspectives,
+            rating: Math.round(game.rating).toString(),
             storyline: game.storyline,
             summary: game.summary,
             genres: genreArray,
             platforms: platformNameArray,
             cover: gameCover,
+            multiplayer_modes: game.multiplayer_modes, 
             videos: videoIdArray,
-            release_date: game.first_release_date
+            // offline_coop: coop,
+            release_date: setReleaseDate(game.first_release_date),
+            slug: game.slug
           };
           gamesArray.push(gameObject);
         });
@@ -84,7 +120,7 @@ const App = () => {
             <Route path="/games" exact>
               <GameList games={gamesList}/>
             </Route>
-            <Route path="/game/:id">
+            <Route path="/games/:id">
               <GameShow games={gamesList}/>
             </Route>
           </Switch>
