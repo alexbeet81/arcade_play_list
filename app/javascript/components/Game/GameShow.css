@@ -53,10 +53,23 @@
   z-index: 100;
 }
 
+.game_show__rating {
+  z-index: 2;
+  position: absolute;
+  top: 8px;
+  left: 734px;
+  box-shadow: -4px 4px 0px 0px #20bf7a;
+  background-color: #fff;
+  border: 1px solid #615f60;
+  height: 16px;
+  padding: 8px
+}
+
 /* release date */
 
 .game_show__release_date_container {
   display: flex;
+  margin: 8px 0 8px 0;
 }
 
 .game_show__release_date {
@@ -67,15 +80,69 @@
 
 .game_show__platform_container {
   display: flex;
+  margin-bottom: 8px;
 }
 
 .game_show__platform {
   color: #858688;
 }
 
+/* summary */
+
+.game_show__summary_container {
+  display: flex;
+  margin-bottom: 8px;
+}
+
+.game_show__summary {
+  color: #858688;
+}
+
+/* genre */
+
+.game_show__genre_container {
+  display: flex;
+  margin-bottom: 8px;
+}
+
+.game_show__genre {
+  color: #858688;
+}
+
+/* player perspective */
+
+.game_show__player_perspective_container {
+  display: flex;
+  margin-bottom: 8px;
+}
+
+.game_show__player_perspective {
+  color: #858688;
+}
+
+/* co-op */
+
+.game_show__coop_container {
+  display: flex;
+  margin-bottom: 8px;
+}
+
+.game_show__coop {
+  color: #858688;
+}
+
+/* screeshots */
+
+.game_show__screenshots_container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
 .row {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   padding: 0 4px;
 }
 
@@ -91,3 +158,38 @@
   width: 100%;
 }
 
+/* video */
+
+.game_show__video {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+/* buttons */
+
+.game_show__buttons {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+
+.game_show__cancel,
+.game_show__add {
+  font-family: 'Press Start 2P', cursive;
+  height: 32px;
+  border: 1px solid #615f60;
+  margin: 0 0 0 8px;
+  background-color: #ffffff;
+  cursor: pointer;
+}
+
+.game_show__cancel {
+  -webkit-box-shadow: -4px 4px 0px 0px #f82e30; 
+  box-shadow: -4px 4px 0px 0px #f82e30;
+}
+.game_show__add {
+  -webkit-box-shadow: -4px 4px 0px 0px #fff03b; 
+  box-shadow: -4px 4px 0px 0px #fff03b;
+}

@@ -8,9 +8,36 @@ const GameShow = (props) => {
   const gameInfo = useParams();
   const selectedGame = props.games.find(game => game.slug === gameInfo.id)
   const bannerImage = selectedGame.screenshots[0].image_id
-  console.log(selectedGame.screenshots);
 
-  console.log(selectedGame.platforms.length, "generes length")
+  // set the name of the platforms into a string.
+  let platform = '';
+  selectedGame.platforms.forEach((plat, index) => {
+    if ((selectedGame.platforms.length - 1) === index) {
+      platform += plat.name;
+    } else {
+      platform += `${plat.name}, `;
+    }
+  });
+
+  // set the name of the genre into a string.
+  let genre = '';
+  selectedGame.genres.forEach((gen, index) => {
+    if ((selectedGame.genres.length - 1) === index) {
+      genre += gen.name
+    } else {
+      genre += `${gen.name}, `
+    }
+  });
+
+  // set the name of the perspective
+  let perspective = '';
+  selectedGame.player_perspectives.forEach((per, index) => {
+    if ((selectedGame.player_perspectives.length - 1) === index) {
+      perspective += per.name;
+    } else {
+      perspective += `${per.name}, `
+    }
+  });
   
   // in return method, ittrate through variable from use state
   // find how to pass the params via this route
@@ -20,43 +47,50 @@ const GameShow = (props) => {
         <div className="game_show__banner">
           <img src={`https://images.igdb.com/igdb/image/upload/t_screenshot_big/${bannerImage}.jpg`}/>
           <div className="game_show__name">{selectedGame.name}</div>
+          {selectedGame.rating !== 'NaN' && <div className="game_show__rating">{selectedGame.rating}</div>}
         </div>
         <div className="game_show__release_date_container">
           <div className="game_show__release_date_title">Release date: </div>
           <div className="game_show__release_date">{selectedGame.release_date}</div>
         </div>
         <div className="game_show__platform_container">
-          <div className="game_show__platform_title">Platform: </div>
-          {selectedGame.platforms.map((plat, index) => {
-            console.log(index, "index number");
-            return (
-              <div className="game_show__platform" key={index}>{plat.name}</div>
-            )
-          })}
+          <div className="game_show__platform_title">{selectedGame.platforms.length > 1 ? "Platforms: " : "Platform: " }</div>
+          <div className="game_show__platform">{platform}</div>
         </div>
-        <div>{selectedGame.summary}</div>
-        <div>{selectedGame.rating}</div>
-        {selectedGame.genres.map((genre, index) => {
-          return (
-            <div key={index}>{genre.name}</div>
-          )
-        })}
-        <div>{selectedGame.player_perspectives[0].name}</div>
-        <div>co-op: {selectedGame.coop}</div>
-        <div className="row">
-          {selectedGame.screenshots.map((shot, index) => {
-            return (
-              <div className="column">
-                <img key={index} src={`https://images.igdb.com/igdb/image/upload/t_screenshot_big/${shot.image_id}.jpg`}/>
-              </div>
-            )
-          })}
+        <div className="game_show__genre_container">
+          <div className="game_show__genre_title">Genre: </div>
+          <div className="game_show__genre">{genre}</div>
+        </div>
+        <div className="game_show__player_perspective_container">
+          <div className="game_show__player_perspective_title">Player perspective: </div>
+          <div className="game_show__player_perspective">{perspective}</div>
+        </div>
+        <div className="game_show__coop_container">
+          <div className="game_show__coop_title">co-op: </div>
+          <div className="game_show__coop">{selectedGame.coop}</div> 
+        </div>
+        <div className="game_show__summary_container">
+          <div className="game_show__summary_title">Summary: </div>
+          <div className="game_show__summary">{selectedGame.summary}</div>
+        </div>
+        <div className="game_show__screenshots_container">
+          <div className="row">
+            {selectedGame.screenshots.map((shot, index) => {
+              return (
+                <div className="column">
+                  <img key={index} src={`https://images.igdb.com/igdb/image/upload/t_screenshot_big/${shot.image_id}.jpg`}/>
+                </div>
+              )
+            })}
+          </div>
         </div>
         <div className="game_show__video">
           {selectedGame.videos[0].image_id !== false && <ReactPlayer url={`https://www.youtube.com/watch?v=${selectedGame.videos[0].video_id}`} />}
         </div>
-        <button type="button">Cancel</button>
-        <button type="button">Add</button>
+        <div className="game_show__buttons">
+          <button className="game_show__cancel" type="button">Cancel</button>
+          <button className="game_show__add" type="button">Add</button>
+        </div>
       </div>
     </div>
   )

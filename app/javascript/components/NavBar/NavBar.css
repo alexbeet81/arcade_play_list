@@ -35,6 +35,7 @@ body {
   background-color: #ffffff;
   cursor: pointer;
 }
+
 .nav_bar__button {
   -webkit-box-shadow: -4px 4px 0px 0px #20bf7a; 
   box-shadow: -4px 4px 0px 0px #20bf7a;

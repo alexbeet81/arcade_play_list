@@ -5,6 +5,7 @@
   margin: 16px;
   padding: 8px;
   border: 1px solid #615f60;
+  background-color: #fff;
 }
 
 .game__card:hover {
@@ -12,10 +13,10 @@
   box-shadow: -4px 4px 0px 0px #20bf7a;
   transform: translate(4px, -4px);
 }
-
-.game__card img {
+/* 
+.game__card_img {
   width: 148px;
-}
+} */
 
 .game__titles {
   margin-left: 8px;
