@@ -9,7 +9,7 @@ import GameShow from './Game/GameShow';
 const App = () => {
   const [gamesList, setGamesList] = useState([]);
 
-  // method setting release date of game to human readable string
+  // method takes Unix Time Stamp and returns release date of game in string
   const setReleaseDate = (timeStamp) => {
     if (typeof timeStamp === 'undefined') {
       return 'unknown'
@@ -26,6 +26,17 @@ const App = () => {
     const monthName = months[monthIndex]
 
     return `${monthName} ${date} ${year}`
+  }
+
+  // method takes a boolean that checks if a game is coop and returns a string
+  const isCoop = (game) => {
+    let coop;
+    if (game.multiplayer_modes === undefined) {
+      coop = "no";
+    } else {
+      coop = game.multiplayer_modes[0].offlinecoop ? "yes" : "no";
+    }
+    return coop;
   }
 
   const searchGameHandler = (enteredGameSearch) => {
@@ -56,6 +67,7 @@ const App = () => {
              multiplayer_modes.offlinemax,
              multiplayer_modes.offlinecoop,
              artworks.url,
+             screenshots,
              slug,
              storyline;
              search "${enteredGameSearch}";`,
@@ -71,21 +83,11 @@ const App = () => {
           let platformNameArray;
           let genreArray;
           let videoIdArray;
-
-          console.log(game.multiplayer_modes[0].offlinecoop, "line 75")
-
-          if (game.multiplayer_modes[0].offlinecoop === 'undifined') {
-            const coop = "no";
-          } else {
-            const coop = game.multiplayer_modes[0].offlinecoop ? "yes" : "no";
-          }
-
-          
-          console.log(coop, "coop, line 77")
-          // checking if some arrays are undifined
-          typeof game.platforms !== "object" ? platformNameArray = [{ name: "platform unknown"}] : platformNameArray = game.platforms;
-          typeof game.genres !== "object" ? genreArray = [{ name: "genre unknown"}] : genreArray = game.genres;
-          typeof game.videos !== "object" ? videoIdArray = [{video_id: 'GED9p33VYIw'}] : videoIdArray = game.videos;
+                    
+          // checking if some arrays are undefined
+          typeof game.platforms !== "object" ? platformNameArray = [{ name: "unknown"}] : platformNameArray = game.platforms;
+          typeof game.genres !== "object" ? genreArray = [{ name: "unknown"}] : genreArray = game.genres;
+          typeof game.videos !== "object" ? videoIdArray = [{video_id: false }] : videoIdArray = game.videos;
 
           const gameObject = {
             id: game.id,
@@ -96,10 +98,11 @@ const App = () => {
             summary: game.summary,
             genres: genreArray,
             platforms: platformNameArray,
-            cover: gameCover,
-            multiplayer_modes: game.multiplayer_modes, 
+            multiplayer_modes: game.multiplayer_modes,
+            coop: isCoop(game),
             videos: videoIdArray,
-            // offline_coop: coop,
+            cover: gameCover,
+            screenshots: game.screenshots,
             release_date: setReleaseDate(game.first_release_date),
             slug: game.slug
           };

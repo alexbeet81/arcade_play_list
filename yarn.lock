@@ -5776,6 +5776,11 @@
   "resolved" "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
   "version" "16.13.1"
 
+"react-pixelify@^0.2.2":
+  "integrity" "sha512-a33NPPvy9pwdcTivgQIVSqoVy17mamUReqyTiWydTVfp6GS5mjZ94B92X5hNeHywwoaYp+VA7VWbJs/T76L4kg=="
+  "resolved" "https://registry.npmjs.org/react-pixelify/-/react-pixelify-0.2.2.tgz"
+  "version" "0.2.2"
+
 "react-player@^2.9.0":
   "integrity" "sha512-jNUkTfMmUhwPPAktAdIqiBcVUKsFKrVGH6Ocutj6535CNfM91yrvWxHg6fvIX8Y/fjYUPoejddwh7qboNV9vGA=="
   "resolved" "https://registry.npmjs.org/react-player/-/react-player-2.9.0.tgz"
