@@ -9,6 +9,36 @@ import GameShow from './Game/GameShow';
 const App = () => {
   const [gamesList, setGamesList] = useState([]);
 
+  // method takes Unix Time Stamp and returns release date of game in string
+  const setReleaseDate = (timeStamp) => {
+    if (typeof timeStamp === 'undefined') {
+      return 'unknown'
+    }
+    const d = new Date(timeStamp * 1000);
+    const year = d.getFullYear();
+    const date = d.getDate();
+    const monthIndex = d.getMonth();
+
+    const months = ['January', 'February', 'March', 'April', 'May', 
+                    'June', 'July', 'August', 'September', 'October', 
+                    'November', 'December']
+    
+    const monthName = months[monthIndex]
+
+    return `${monthName} ${date} ${year}`
+  }
+
+  // method takes a boolean that checks if a game is coop and returns a string
+  const isCoop = (game) => {
+    let coop;
+    if (game.multiplayer_modes === undefined) {
+      coop = "no";
+    } else {
+      coop = game.multiplayer_modes[0].offlinecoop ? "yes" : "no";
+    }
+    return coop;
+  }
+
   const searchGameHandler = (enteredGameSearch) => {
     axios({
       url: "http://localhost:3030/https://api.igdb.com/v4/games",
@@ -22,11 +52,11 @@ const App = () => {
       // data: `fields name; search "${search}";`,
       data: `fields name,
              platforms,
-             player_perspectives,
+             player_perspectives.name,
              rating,
              rating_count,
              total_rating,
-             release_dates,
+             first_release_date,
              cover.image_id,
              screenshots.image_id,
              platforms.name,
@@ -34,14 +64,17 @@ const App = () => {
              summary,
              videos.video_id,
              artworks.image_id,
+             multiplayer_modes.offlinemax,
+             multiplayer_modes.offlinecoop,
              artworks.url,
+             screenshots,
+             slug,
              storyline;
              search "${enteredGameSearch}";`,
     })
       .then((res) => {
         const gamesArray = [];
         const respList = res.data;
-        console.log(respList, "respList line 45");
 
         respList.map((game) => {
           const gameImage = game.cover.image_id;
@@ -50,22 +83,28 @@ const App = () => {
           let platformNameArray;
           let genreArray;
           let videoIdArray;
-          
-          // checking if some arrays are undifined
-          typeof game.platforms !== "object" ? platformNameArray = [{ name: "platform unknown"}] : platformNameArray = game.platforms;
-          typeof game.genres !== "object" ? genreArray = [{ name: "genre unknown"}] : genreArray = game.genres;
-          typeof game.videos !== "object" ? videoIdArray = [{video_id: 'GED9p33VYIw'}] : videoIdArray = game.videos;
+                    
+          // checking if some arrays are undefined
+          typeof game.platforms !== "object" ? platformNameArray = [{ name: "unknown"}] : platformNameArray = game.platforms;
+          typeof game.genres !== "object" ? genreArray = [{ name: "unknown"}] : genreArray = game.genres;
+          typeof game.videos !== "object" ? videoIdArray = [{video_id: false }] : videoIdArray = game.videos;
 
           const gameObject = {
             id: game.id,
             name: game.name,
-            rating: game.rating,
+            player_perspectives: game.player_perspectives,
+            rating: Math.round(game.rating).toString(),
             storyline: game.storyline,
             summary: game.summary,
             genres: genreArray,
             platforms: platformNameArray,
-            cover: gameCover,
+            multiplayer_modes: game.multiplayer_modes,
+            coop: isCoop(game),
             videos: videoIdArray,
+            cover: gameCover,
+            screenshots: game.screenshots,
+            release_date: setReleaseDate(game.first_release_date),
+            slug: game.slug
           };
           gamesArray.push(gameObject);
         });
@@ -78,16 +117,16 @@ const App = () => {
 
   return (
     <div>
-      <NavBar onSaveSearchData={searchGameHandler}/>
       <Router>
-        <Switch>
-          <Route path="/show" exact>
-            <GameList games={gamesList}/>
-          </Route>
-          <Route path="/:id">
-            <GameShow games={gamesList}/>
-          </Route>
-        </Switch>
+        <NavBar onSaveSearchData={searchGameHandler}/>
+          <Switch>
+            <Route path="/games" exact>
+              <GameList games={gamesList}/>
+            </Route>
+            <Route path="/games/:id">
+              <GameShow games={gamesList}/>
+            </Route>
+          </Switch>
       </Router>
     </div>
   )

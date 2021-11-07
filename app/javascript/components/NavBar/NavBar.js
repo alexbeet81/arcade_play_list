@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+
 import './NavBar.css';
 
 const NavBar = (props) => {
   const [enteredGameSearch, setEnteredGameSearch] = useState("");
+  const history = useHistory();
 
   const searchChangeHandler = (event) => {
     setEnteredGameSearch(event.target.value);
@@ -13,7 +16,7 @@ const NavBar = (props) => {
 
     props.onSaveSearchData(enteredGameSearch);
     setEnteredGameSearch("");
-    // setIsButtonClicked(false);
+    history.push('/games');
   };
 
   return (
