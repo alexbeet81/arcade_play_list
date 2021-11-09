@@ -75,6 +75,7 @@ const App = () => {
       .then((res) => {
         const gamesArray = [];
         const respList = res.data;
+        console.log(respList, "respList App.js line 78")
 
         respList.map((game) => {
           const gameImage = game.cover.image_id;
@@ -83,16 +84,20 @@ const App = () => {
           let platformNameArray;
           let genreArray;
           let videoIdArray;
+          let playerPerspectivesArray;
+          let screenShotArray;
                     
           // checking if some arrays are undefined
           typeof game.platforms !== "object" ? platformNameArray = [{ name: "unknown"}] : platformNameArray = game.platforms;
           typeof game.genres !== "object" ? genreArray = [{ name: "unknown"}] : genreArray = game.genres;
           typeof game.videos !== "object" ? videoIdArray = [{video_id: false }] : videoIdArray = game.videos;
+          typeof game.player_perspectives !== "object" ? playerPerspectivesArray = [{name: "unknown"}] : playerPerspectivesArray = game.player_perspectives;
+          // typeof game.screenshots !== "object" ? screenShotArray = [{name: }]
 
           const gameObject = {
             id: game.id,
             name: game.name,
-            player_perspectives: game.player_perspectives,
+            player_perspectives: playerPerspectivesArray,
             rating: Math.round(game.rating).toString(),
             storyline: game.storyline,
             summary: game.summary,

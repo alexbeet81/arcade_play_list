@@ -46,7 +46,9 @@ const GameShow = (props) => {
       <div className="game_show__card">
         <div className="game_show__banner">
           <img src={`https://images.igdb.com/igdb/image/upload/t_screenshot_big/${bannerImage}.jpg`}/>
-          <div className="game_show__name">{selectedGame.name}</div>
+          <div className="game_show__name_container">
+            <div className="game_show__name">{selectedGame.name}</div>
+          </div>
           {selectedGame.rating !== 'NaN' && <div className="game_show__rating">{selectedGame.rating}</div>}
         </div>
         <div className="game_show__release_date_container">
@@ -84,9 +86,9 @@ const GameShow = (props) => {
             })}
           </div>
         </div>
-        <div className="game_show__video">
-          {selectedGame.videos[0].image_id !== false && <ReactPlayer url={`https://www.youtube.com/watch?v=${selectedGame.videos[0].video_id}`} />}
-        </div>
+        {selectedGame.videos[0].image_id !== false && <div className="game_show__video">
+          <ReactPlayer url={`https://www.youtube.com/watch?v=${selectedGame.videos[0].video_id}`} />
+        </div>}
         <div className="game_show__buttons">
           <button className="game_show__cancel" type="button">Cancel</button>
           <button className="game_show__add" type="button">Add</button>

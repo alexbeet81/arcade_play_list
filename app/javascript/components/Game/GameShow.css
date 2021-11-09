@@ -44,10 +44,19 @@
   /* filter: blur(2px); */
 }
 
-.game_show__name {
+.game_show__name_container {
   position: absolute;
-  top: 64px;
-  left: 16px;
+  top: 0;
+  left: 0;
+  width: inherit;
+  height: inherit;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.game_show__name {
+  margin-left: 16px;
   font-size: 32px;
   color: #fff;
   z-index: 100;
